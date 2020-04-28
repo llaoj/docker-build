@@ -28,7 +28,7 @@ deploy
 `Dockerfile`示例
 
 ```
-FROM registry.cn-beijing.aliyuncs.com/davidwang/php-swoole:7.4-0.4
+FROM registry.cn-beijing.aliyuncs.com/davidwang/php-swoole:tag
 
 COPY ./ /var/www/html/
 RUN chmod -R 777 /var/www/html
@@ -58,7 +58,7 @@ exec supervisord -n
 
 在项目根目录下,执行
 ```
-docker build -f ./deploy/Dockerfile -t $IMAGE_TAG .
+docker build -f ./deploy/Dockerfile -t tagname .
 ```
 进行打包
 
