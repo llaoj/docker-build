@@ -1,7 +1,6 @@
 FROM php:7.4-fpm
 
-RUN sed -ri 's/(deb|security).debian.org/mirrors.163.com/g' /etc/apt/sources.list && \
-    apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y \
         git \
         libzip-dev \
         zip \
@@ -20,10 +19,12 @@ RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/i
         bcmath \
         zip
 
-RUN pecl install redis-5.2.1 \
-    && pecl install grpc-1.28.0 \
-    && pecl install protobuf-3.11.4 \
+RUN pecl install redis \
+    && pecl install grpc \
+    && pecl install protobuf \
     && docker-php-ext-enable redis grpc protobuf
+
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer \
