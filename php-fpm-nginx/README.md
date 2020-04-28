@@ -1,5 +1,3 @@
-## 镜像地址
-`registry.cn-beijing.aliyuncs.com/davidwang/php-fpm-nginx:7.3.11`
 ## 介绍
  - 1 这个镜像是用来打包php-fpm+nginx的基础镜像
  - 2 预装了 supervisor nginx php-fpm
