@@ -1,7 +1,6 @@
 FROM php:7.4-cli
 
-RUN sed -ri 's/(deb|security).debian.org/mirrors.163.com/g' /etc/apt/sources.list && \
-    apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y \
         git \
         libzip-dev \
         zip \
