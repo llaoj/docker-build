@@ -1,4 +1,3 @@
-## 镜像地址
 ## 介绍
  - 1 这个镜像是用来打包php-cli-swoole的基础镜像
  - 2 预装了 supervisor  php-cli with swoole redis 
@@ -28,9 +27,10 @@ deploy
 `Dockerfile`示例
 
 ```
-FROM registry.cn-beijing.aliyuncs.com/davidwang/php-swoole:tag
+FROM llaoj/php-swoole:tag
 
-COPY ./ /var/www/html/
+WORKDIR /var/www/html
+COPY . .
 RUN chmod -R 777 /var/www/html
 
 CMD ["./deploy/start.sh"]
@@ -41,17 +41,11 @@ CMD ["./deploy/start.sh"]
 ```
 #!/bin/bash
 
-workdir=/var/www/html
+cp $PWD/deploy/conf/supervisor/* /etc/supervisor/conf.d/
 
-cp $workdir/deploy/conf/supervisor/* /etc/supervisor/conf.d/
-
-mkdir /root/.ssh 
-cp $workdir/deploy/conf/ssh/* /root/.ssh/
-chmod 600 /root/.ssh/*
+...
 
 sleep 30
-
-composer install
 
 exec supervisord -n
 ```
