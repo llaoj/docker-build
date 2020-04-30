@@ -1,12 +1,13 @@
 FROM debian:buster-slim
  
 RUN apt-get update && apt-get install -y \
-    curl \
-    unzip \
-    git \
-    build-essential \
-    autoconf \
-    libtool
+        curl \
+        unzip \
+        git \
+        build-essential \
+        autoconf \
+        libtool \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /root    
 
