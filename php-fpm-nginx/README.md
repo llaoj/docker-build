@@ -1,74 +1,54 @@
-## 介绍
- - 1 这个镜像是用来打包php-fpm+nginx的基础镜像
- - 2 预装了 supervisor nginx php-fpm
- - 3 supervisor 为主进程 管理 子进程nginx php-fpm
- - 4 nginx默认网站配置文件:`/etc/nginx/sites-enabled/default`
- - 5 supervisor配置文件放置地址:`/etc/supervisor/conf.d/`
- - 6 workdir=`/var/www/html/`,项目文件拷贝到该目录下即可
- - 7 php-fpm 服务地址`listen = 127.0.0.1:9000`
+## intro
+ - 1 a base image
+ - 2 installed supervisor, nginx, php-fpm, composer
+ - 3 supervisor is the root process which mange other process, like nginx php-fpm and other defined program
+ - 4 nginx site conf path: `/etc/nginx/sites-enabled/default`
+ - 5 supervisor program conf path: `/etc/supervisor/conf.d/`
+ - 6 workdir: `/var/www/html/`
+ - 7 php-fpm listen: `listen = 127.0.0.1:9000`
 
-## 使用说明
-在你的项目根目录下创建一个deploy文件夹
-目录结构这样的
-```
-deploy
-  conf
-    nginx
-      default:应用发布的nginx配置文件
-    supervisor
-      *.conf:需要管理的守护进程,supervisor配置文件,比如队列\定时任务等...
-    app
-      ...:应用配置文件,比如:.env.testing\.env.master...
-  Dockerfile
-  start.sh
-  ...
-```
-按照这样的组织方式就可以将代码打包进image
+## how to use
 
-#### 配置文件发布生效说明
-为了发布我们的网站(nginx)和守护进程(supervisor),需要在Dockerfile中将这些文件拷贝进相应的目录,然后前台执行supervisord服务.
+due this is a base image, you can use this image like this,
 
-`Dockerfile`示例
+`Dockerfile` demo:
 
 ```
-FROM registry.cn-beijing.aliyuncs.com/davidwang/php-fpm-nginx:7.3.11
+FROM llaoj/php-fpm-nginx:tagname
 
-COPY ./ /var/www/html/
+COPY . .
 
-RUN chmod 755 ./deploy/start.sh
+RUN chmod 755 bootstrap.sh
 
-CMD ["./deploy/start.sh"]
+CMD ["bootstrap.sh"]
 ```
 
-`start.sh`示例
+`bootstrap.sh` demo:
 
 ```
 #!/bin/bash
 
-workdir=/var/www/html
-
-if [ -f $workdir/deploy/conf/nginx/default ]; then
-  cp $workdir/deploy/conf/nginx/default /etc/nginx/sites-enabled/default
+#nginx site conf
+if [ -f $PWD/conf/nginx/default ]; then
+  cp $PWD/conf/nginx/default /etc/nginx/sites-enabled/default
 fi
 
-if [ -d "$workdir/deploy/conf/supervisor/" ]; then
-  cp $workdir/deploy/conf/supervisor/* /etc/supervisor/conf.d/
+#other program process conf, manage by supervisor
+if [ -d "$PWD/conf/supervisor/" ]; then
+  cp $PWD/conf/supervisor/* /etc/supervisor/conf.d/
 fi
 
 exec supervisord -n
 ```
 
-在项目根目录下,执行
-```
-docker build -f ./deploy/Dockerfile -t $IMAGE_TAG .
-```
-进行打包
+so, you can build your image like this:
 
-### 进程启动用户
-默认都是`www-data`
-所以,自己配置守护进程(supervisor)时记得指定启动用户:`user=www-data`
+```
+docker build -t tagname .
+```
 
-supervisor进程配置文件,示例
+besides, you can define a program process (`mns-worker.conf`) like this:
+
 ```
 [program:mns-worker]
 process_name=%(program_name)s_%(process_num)02d
