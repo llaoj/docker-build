@@ -26,9 +26,7 @@ RUN pecl install redis \
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
-COPY conf/php.ini $PHP_INI_DIR/conf.d/
-
-COPY conf/nginx.conf /etc/nginx/
+COPY conf/php-user.ini $PHP_INI_DIR/conf.d/
 
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer \
