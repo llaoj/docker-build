@@ -11,9 +11,9 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /root    
 
-RUN curl -LO https://github.com/protocolbuffers/protobuf/releases/download/v3.11.4/protoc-3.11.4-linux-x86_64.zip \
-    && unzip protoc-3.11.4-linux-x86_64.zip -d /opt/protoc \
-    && rm protoc-3.11.4-linux-x86_64.zip
+RUN curl -LO https://github.com/protocolbuffers/protobuf/releases/download/v3.12.3/protoc-3.12.3-linux-x86_64.zip \
+    && unzip protoc-3.12.3-linux-x86_64.zip -d /opt/protoc \
+    && rm protoc-3.12.3-linux-x86_64.zip
 
 ENV PATH $PATH:/opt/protoc/bin
 
