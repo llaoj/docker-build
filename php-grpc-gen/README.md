@@ -27,3 +27,4 @@ protoc --proto_path=. \
 |docker tag|protoc|grpc_php_plugin|
 |-|-|-|
 |1.28.1|3.11.4|1.28.1|
+|1.30.0|3.12.3|1.30.0|
