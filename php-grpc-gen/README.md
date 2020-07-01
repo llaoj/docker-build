@@ -12,6 +12,8 @@ due to network and other reasons, the download and Compilation of grpc_php_plugi
 ## example
 
 ```
+docker run --rm -it -v /host/file/dir:/root llaoj/php-grpc-gen:tagname bash
+
 cd protobuf-file-path
 
 protoc --proto_path=. \
