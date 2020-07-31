@@ -21,10 +21,12 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
         sockets
 
 RUN pecl install redis \
-    && pecl install swoole-4.5.0 \
+    && pecl install swoole-4.5.2 \
     && docker-php-ext-enable redis swoole
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
+COPY conf/php-user.ini $PHP_INI_DIR/conf.d/
 
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer \
