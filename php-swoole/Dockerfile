@@ -17,7 +17,8 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
         pdo_mysql \
         bcmath \
         zip \
-        pcntl
+        pcntl \
+        sockets
 
 RUN pecl install redis \
     && pecl install swoole-4.5.0 \
